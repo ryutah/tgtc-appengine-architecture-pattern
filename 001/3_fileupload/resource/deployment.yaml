@@ -1,0 +1,6 @@
+imports:
+  - path: storage.jinja
+
+resources:
+  - name: storage
+    type: storage.jinja

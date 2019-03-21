@@ -1,0 +1,20 @@
+{% set ID = env['deployment'] %}
+{% set PROJECT_ID = env["project"] %}
+{% set REGION = "asia-northeast1" %}
+
+resources:
+  - name: {{ PROJECT_ID }}-{{ ID }}-public-bucket
+    type: storage.v1.bucket
+    properties:
+      predefinedDefaultObjectAcl: publicRead
+      location: {{ REGION }}
+      storageClass: REGIONAL
+      cors:
+        - maxAgeSeconds: 3600
+          method:
+            - PUT
+          origin:
+            - https://{{ PROJECT_ID }}.appspot.com
+            - http://localhost:8080 {# ローカル開発用 #}
+          responseHeader:
+            - Content-Type

@@ -1,0 +1,17 @@
+info:
+  title: MFC Google Cloud Storage
+  description: |
+    MFCで利用するGCSをプロビジョニングする
+
+properties:
+  storage:
+    type: object
+    default:
+      properties:
+    properties:
+      corsAllowOrigins:
+        type: array
+        description: CORSアクセスを許可するOrigin
+        default: []
+        items:
+          type: string
