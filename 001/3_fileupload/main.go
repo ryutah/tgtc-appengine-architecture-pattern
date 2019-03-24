@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -35,15 +36,19 @@ func main() {
 		}
 		defer client.Close()
 
+		// 署名付きURLの生成
 		uploadURL, err := storage.SignedURL(bucket, fileName, &storage.SignedURLOptions{
 			GoogleAccessID: serviceAccount,
 			Method:         http.MethodPut,
+			ContentType:    "image/png",
 			SignBytes: func(b []byte) ([]byte, error) {
+				// Cloud IAM APIでサービスアカウントを利用して署名を生成する
 				resp, err := client.SignBlob(ctx, &credpb.SignBlobRequest{
 					Name:    fmt.Sprintf("projects/-/serviceAccounts/%s", serviceAccount),
 					Payload: b,
 				})
 				if err != nil {
+					log.Printf("Failed to signe blob: %v", err)
 					return nil, err
 				}
 				return resp.GetSignedBlob(), nil
@@ -51,6 +56,7 @@ func main() {
 			Expires: time.Now().Add(15 * time.Minute),
 		})
 		if err != nil {
+			log.Printf("Failed to signe url: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

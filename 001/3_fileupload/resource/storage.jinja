@@ -3,7 +3,7 @@
 {% set REGION = "asia-northeast1" %}
 
 resources:
-  - name: {{ PROJECT_ID }}-{{ ID }}-public-bucket
+  - name: {{ PROJECT_ID }}-{{ ID }}
     type: storage.v1.bucket
     properties:
       predefinedDefaultObjectAcl: publicRead

@@ -6,13 +6,24 @@
     <title>Example</title>
   </head>
   <body>
-    <button id="send">Send Request</button>
+    <input id="file" type="file" accept="image/png" />
 
     <script type="text/javascript">
-      document.querySelector("#send").addEventListener("click", () => {
-        fetch("/api/foo")
-          .then((resp) => resp.text())
-          .then(alert);
+      document.querySelector("#file").addEventListener("change", (e) => {
+        if (e.target.files.length <= 0) return;
+
+        fetch(`/uploadurl?name=${e.target.files[0].name}`) // 署名付きURLの取得
+          .then((resp) => resp.json())
+          .then((json) =>
+            // ファイルのアップロード
+            fetch(json.url, {
+              method: "PUT",
+              headers: { "Content-Type": "image/png" },
+              body: e.target.files[0],
+            })
+          )
+          .then(() => alert("Success"))
+          .catch(alert);
       });
     </script>
   </body>
