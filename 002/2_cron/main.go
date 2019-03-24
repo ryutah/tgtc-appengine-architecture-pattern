@@ -13,6 +13,8 @@ import (
 var (
 	projectID = os.Getenv("GOOGLE_CLOUD_PROJECT")
 	service   = os.Getenv("GAE_SERVICE")
+	location  = os.Getenv("TASKS_LOCATION")
+	queueID   = os.Getenv("TASKS_QUEUE_NAME")
 )
 
 func main() {
@@ -37,7 +39,7 @@ func main() {
 
 		for i, task := range tasks {
 			createdTask, err := client.CreateTask(ctx, &taskspb.CreateTaskRequest{
-				Parent: fmt.Sprintf("projects/%s/locations/%s/queues/%s", "", "", ""),
+				Parent: fmt.Sprintf("projects/%s/locations/%s/queues/%s", projectID, location, queueID),
 				Task: &taskspb.Task{
 					PayloadType: &taskspb.Task_AppEngineHttpRequest{
 						AppEngineHttpRequest: &taskspb.AppEngineHttpRequest{
@@ -51,6 +53,7 @@ func main() {
 				},
 			})
 			if err != nil {
+				log.Printf("failed to create task: %v", err)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}

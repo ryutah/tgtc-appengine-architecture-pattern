@@ -3,4 +3,4 @@ cron:
     url: /cron/hours
     schedule: every 1 hours
     timezone: Asia/Tokyo
-    target: cron
+    target: default

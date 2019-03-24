@@ -1,1 +1,4 @@
 runtime: go111
+env_variables:
+  TASKS_LOCATION: asia-northeast1 # GAEのリージョンによって変わる
+  TASKS_QUEUE_NAME: tgtc-sample-queue
