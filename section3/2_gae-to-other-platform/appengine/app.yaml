@@ -1,0 +1,3 @@
+runtime: go111
+env_variables:
+  PUBSUB_TOPIC: tgtc-example

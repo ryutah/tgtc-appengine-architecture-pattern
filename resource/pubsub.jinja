@@ -1,0 +1,16 @@
+{% set PROJECT_ID = env["project"] %}
+{% set ID = env['deployment'] %}
+
+resources:
+  - name: topic
+    type: pubsub.v1.topic
+    properties:
+      topic: {{ ID }}
+  - name: subscription
+    type: pubsub.v1.subscription
+    properties:
+      subscription: {{ ID }}
+      topic: $(ref.topic.name)
+    metadata:
+      dependOn:
+        - topic

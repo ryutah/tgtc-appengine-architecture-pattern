@@ -1,6 +1,9 @@
 imports:
   - path: storage.jinja
+  - path: pubsub.jinja
 
 resources:
   - name: storage
     type: storage.jinja
+  - name: pubsub
+    type: pubsub.jinja
